@@ -7,7 +7,7 @@ algorithm
 5. for each error in the 4 panel, determine its average then sum all the error in the 4 panel then the average before is divided by the sum
 6. the value from (5) will then be the error of the four panel counted
 */
-use std::{fs, string};
+use std::{fs, string, time};
 use std::io::{self, Write};
 use crate::algorithm::partitionImage::PartitionImage;
 
@@ -98,6 +98,7 @@ fn main() {
 
     // Compare to all other files
     println!("\nComparing with other images in the folder...\n");
+    let start = time::Instant::now();
     for (i, file) in files.iter().enumerate() {
 
         let reference_image = image::open(file).expect("Failed to open reference image");
@@ -112,7 +113,10 @@ fn main() {
         }
         println!("{} -> Similarity: {:.7}%", file.display(), similarity * 100.0);
     }
-    println!("Average similarity : {}%", avg_sum / count as f64);
+    let duration = start.elapsed();
+
+    println!("\nAverage similarity : {}%", avg_sum / count as f64);
     println!("File with max similarity : {} with similarity {}%", max_similarity_file, max_similarity * 100.0);
+    println!("Time elapsed : {:?} ms", duration.as_millis());
 }
 
