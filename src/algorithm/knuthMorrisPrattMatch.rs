@@ -37,9 +37,9 @@ pub fn getBorderTable(
 
 pub fn KnuthMorrisPrattMatch(
     current_image: &DynamicImage,
-    current_root: Quadtree,
+    current_root: &Quadtree,
     reference_image: &DynamicImage,
-    reference_root: Quadtree,
+    reference_root: &Quadtree,
 ) -> f64 {
     let mut same_count: u32 = 0;
     let pattern_length = reference_root.x_end - reference_root.x_start;

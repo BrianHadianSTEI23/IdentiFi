@@ -6,9 +6,9 @@ use crate::algorithm::checkPartition::CheckPartition;
 
 pub fn PartitionImage(
     current_image : &DynamicImage,
-    current_root : Quadtree,
+    current_root : &Quadtree,
     reference_image :&DynamicImage,
-    reference_root : Quadtree,
+    reference_root : &Quadtree,
 ) -> f64{ 
 
     // run through from the middle
@@ -67,13 +67,16 @@ pub fn PartitionImage(
                                                             reference_root.y_end);
 
         // repeat for each current and reference pair
-        return PartitionImage(current_image, current_top_left, reference_image, reference_top_left) + 
-        PartitionImage(current_image, current_top_right, reference_image, reference_top_right) + 
-        PartitionImage(current_image, current_bottom_left, reference_image, reference_bottom_left) + 
-        PartitionImage(current_image, current_bottom_right, reference_image, reference_bottom_right);
+        let sum = PartitionImage(current_image, &current_top_left, reference_image, &reference_top_left) +
+          PartitionImage(current_image, &current_top_right, reference_image, &reference_top_right) +
+          PartitionImage(current_image, &current_bottom_left, reference_image, &reference_bottom_left) +
+          PartitionImage(current_image, &current_bottom_right, reference_image, &reference_bottom_right);
+
+        return sum / 4.0;
+
 
     } else {
         // stop partition and do pattern matching and the result from the pattern matching will be summed for 3 other panel, then count the average of it (need to be between 0 and 1)
-        return KnuthMorrisPrattMatch(current_image, current_root, reference_image, reference_root);
+        return KnuthMorrisPrattMatch(current_image, &current_root, reference_image, reference_root);
     }
 }
