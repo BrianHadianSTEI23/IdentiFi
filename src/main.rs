@@ -9,6 +9,8 @@ algorithm
 */
 use std::{fs, string, time};
 use std::io::{self, Write};
+use crate::algorithm::bruteForceMatch::bruteForceMatch;
+use crate::algorithm::knuthMorrisPrattMatch::KnuthMorrisPrattMatch;
 use crate::algorithm::partitionImage::PartitionImage;
 
 mod structs;
@@ -90,6 +92,14 @@ fn main() {
     let selected_file = &files[selected_index - 1];
     println!("Selected image: {}", selected_file.display());
 
+    // choose algorithm
+    println!("\n1. Brute Force Match");
+    println!("\n2. KMP Matching");
+    println!("\nEnter the number of the algorithm you want to use:");
+    let mut selected_algorithm = String::new();
+    io::stdin().read_line(&mut selected_algorithm).expect("Failed to read input");
+    let selected_algorithm: usize = selected_algorithm.trim().parse().expect("Please enter a valid number");
+
     // Load selected image
     let current_image = image::open(selected_file).expect("Failed to open selected image");
     let current_root = algorithm::preprocessImage::PreprocessImage(&current_image);
@@ -103,8 +113,12 @@ fn main() {
 
         let reference_image = image::open(file).expect("Failed to open reference image");
         let reference_root = algorithm::preprocessImage::PreprocessImage(&reference_image);
-
-        let similarity = PartitionImage(&current_image, &current_root, &reference_image, &reference_root);
+        let mut similarity: f64 = 0.0;
+        if selected_algorithm == 1 {
+            similarity = bruteForceMatch(&current_image, &current_root, reference_image, reference_root);
+        } else {
+            similarity = KnuthMorrisPrattMatch(&current_image, &current_root, &reference_image, &reference_root);
+        }
         avg_sum += similarity;
         count += 1;
         if similarity > max_similarity {

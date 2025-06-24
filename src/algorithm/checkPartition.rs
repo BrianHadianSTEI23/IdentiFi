@@ -12,7 +12,7 @@ pub fn CheckPartition(
     reference_image : &DynamicImage,
     reference_root : &Quadtree,
 ) -> bool {
-    let factor : f64 = 1.0;
+    let factor : f64 = 2.0;
 
     let current_width : u32 = current_root.x_end - current_root.x_start;
     let current_height : u32 = current_root.y_end - current_root.y_start;

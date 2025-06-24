@@ -9,8 +9,8 @@ use crate::{algorithm::rgbToGrayscale::rgbToGrayscale, structs::quadtree::Quadtr
 use image::DynamicImage;
 
 pub fn bruteForceMatch(
-    current_image : DynamicImage,
-    current_root : Quadtree,
+    current_image : &DynamicImage,
+    current_root : &Quadtree,
     reference_image : DynamicImage,
     reference_root : Quadtree,
 ) -> f64 {
