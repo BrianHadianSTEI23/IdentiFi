@@ -1,5 +1,7 @@
-pub mod bayerMooreMatch;
+pub mod bruteForceMatch;
 pub mod checkPartition;
 pub mod knuthMorrisPrattMatch;
-pub mod meanAbsoluteDeviation;
+pub mod quadTreeDeviation;
 pub mod partitionImage;
+pub mod preprocessImage;
+pub mod rgbToGrayscale;

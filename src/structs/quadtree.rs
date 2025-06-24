@@ -1,21 +1,21 @@
 
 pub struct Quadtree{
-    top_left : Option<Box<Quadtree>>,
-    top_right : Option<Box<Quadtree>>,
-    bottom_left : Option<Box<Quadtree>>,
-    bottom_right : Option<Box<Quadtree>>,
-    x_start : i32,
-    x_end : i32,
-    y_start : i32,
-    y_end : i32,
+    pub top_left : Option<Box<Quadtree>>,
+    pub top_right : Option<Box<Quadtree>>,
+    pub bottom_left : Option<Box<Quadtree>>,
+    pub bottom_right : Option<Box<Quadtree>>,
+    pub x_start : u32,
+    pub x_end : u32,
+    pub y_start : u32,
+    pub y_end : u32,
 }
 
 impl Quadtree {
     // constructor
-    pub fn new( x_start_new : i32,
-            x_end_new : i32,
-            y_start_new : i32,
-            y_end_new : i32,
+    pub fn new( x_start_new : u32,
+            x_end_new : u32,
+            y_start_new : u32,
+            y_end_new : u32,
     ) -> Self {
         Self {
             top_left : None,

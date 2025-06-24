@@ -1,23 +1,36 @@
 
-// specification : determine if part after partition is still needed to be partitioned
+// specification : determine if part after partition is still needed to be partitioned 
+// by checking whether the deviation from current_root is larger or not than deviation 
+// from reference_root
 
-use QuadTree;
+use image::{DynamicImage};
+use crate::{algorithm::{quadTreeDeviation::{QuadTreeDeviation}}, structs::quadtree::Quadtree};
 
 pub fn CheckPartition(
-    image : ImageResult<DynamicImage>,
-    x_start : i32,
-    x_end : i32,
-    y_start : i32,
-    y_end : i32
+    current_image : &DynamicImage,
+    current_root : &Quadtree,
+    reference_image : &DynamicImage,
+    reference_root : &Quadtree,
 ) -> bool {
-    for row in x_start..x_end + 1 {
-        for col in y_start..y_end + 1 {
-            let grayscale_equivalent:i32 = (0.299 * image.get_pixel(row, col).0[0]) + (0.587 * image.get_pixel(row, col).0[0]) + (0.114 * image.get_pixel(row, col).0[0]).floor();
-            if  grayscale_equivalent > 245{
-                // keep doing partition
-                return true;
-            }
+    let factor : f64 = 1.0;
+
+    let current_width : u32 = current_root.x_end - current_root.x_start;
+    let current_height : u32 = current_root.y_end - current_root.y_start;
+    let reference_width : u32 = reference_root.x_end - reference_root.x_start;
+    let reference_height : u32 = reference_root.y_end - reference_root.y_start;
+    
+    // check which root is larger between reference_root 
+    if current_width < reference_width {
+        if current_height < reference_height {
+            return QuadTreeDeviation(current_image, current_width, current_height) < (QuadTreeDeviation(reference_image, current_width, current_height) / factor);
+        } else {
+            return QuadTreeDeviation(current_image, current_width, reference_height) < (QuadTreeDeviation(reference_image, current_width, reference_height) / factor);
+        }
+    } else {
+        if current_height < reference_height {
+            return QuadTreeDeviation(current_image, reference_width, current_height) < (QuadTreeDeviation(reference_image, reference_width, current_height) / factor);
+        } else {
+            return QuadTreeDeviation(current_image, reference_width, reference_height) < (QuadTreeDeviation(reference_image, reference_width, reference_height) / factor);
         }
     }
-    return false;
 }
